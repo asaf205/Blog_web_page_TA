@@ -1,0 +1,72 @@
+.table {
+    display: grid;
+    grid-auto-flow: row;
+    margin: 10px;
+}
+
+#home, #aboutme, #nan1, #nan2 {
+
+    margin-right: 5px;
+}
+
+#login, #signup,#logout {
+    grid-column: 100;
+}
+
+.content {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+}
+
+.left_side {
+    margin-right: 20px;
+    margin-left: 10px;
+    width: 60%;
+}
+
+.right_side {
+    margin-left: 20px;
+}
+
+.inner_table {
+    /*border: 2px black solid;*/
+    padding-left: 3px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+}
+
+h1 {
+    margin-bottom: 1px;
+}
+
+p span {
+    color: red;
+}
+
+.down {
+    border-top: 2px black solid;
+}
+
+#firstBlog {
+    color: black;
+}
+
+#loginButton, #signupButton, #logoutButton{
+    width: 200px;
+}
+
+h1 {
+    font-family: font-body, serif;
+}
+p{
+    width: 100%;
+}
+.new{
+    margin: 5px;
+}
+a{
+    text-decoration:none;
+}
