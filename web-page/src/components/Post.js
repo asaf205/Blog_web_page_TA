@@ -2,13 +2,12 @@ import '../App.css';
 import React, {useState, useEffect} from 'react';
 import {Left} from "../App";
 import axios from 'axios';
-import {Link, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {
-
     useParams,
 } from "react-router-dom";
 import RateReviewIcon from '@material-ui/icons/RateReview';
-import {ListItem, ListItemAvatar, ListItemText} from "@material-ui/core";
+import {Grid, ListItem, ListItemAvatar, ListItemText, Paper} from "@material-ui/core";
 import Divider from '@material-ui/core/Divider';
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -46,7 +45,8 @@ export let Get_posts_by_category = (func,data) => {
 let Posts = (props) => {
     const [Data, setData] = useState(props.data);
     const [Category,setCategory] = useState('All');
-    const history = useHistory()
+    const history = useHistory();
+    const classes = useStyles();
     let filter = {
         category: Category
     }
@@ -56,19 +56,24 @@ let Posts = (props) => {
     }, [Category]);
     let post_list = create_obj_list(Data);
     const listItems = post_list.map((postItem) =>
-        <div key={postItem.id}>
+        <Grid key={postItem.id} className={classes.single} >
+            <Paper elevation={3}>
             <ListItem key={postItem.id} button onClick={()=>history.push(`/Post/${postItem.id}`)}>
                 <ListItemText primary={postItem.title} secondary={postItem.text ? postItem.text.substring(0, 200)+"...." : null}/>
             </ListItem>
             <Divider/>
-        </div>
+            </Paper>
+        </Grid>
     );
 
     return (
-        <div>
+        <Grid className={classes.post} container
+              direction="column"
+              justifyContent="center"
+              alignItems="center" >
             <RadioButtons setCategory = {setCategory}/>
             {listItems}
-        </div>)
+        </Grid>)
 };
 let Get_single_post = async (func, id, func2) => {
     let url = '/api/posts/single';
@@ -91,6 +96,17 @@ const useStyles = makeStyles((theme) => ({
     inline: {
         display: 'inline',
     },
+    post: {
+        width: '100%',
+        height:'100%',
+        borderRadius:'1px solid',
+    },
+    single: {
+        width: '90%',
+        height:'100%',
+        padding: theme.spacing(1),
+        textAlign: 'center',
+    }
 }));
 let Comment = (props) => {
     const classes = useStyles();

@@ -5,7 +5,6 @@ import axios from "axios";
 import {useHistory} from "react-router-dom";
 
 let Add_new_comment = (props)=>{
-    const [push, setPush] = useState(1);
     const [name, setName] = useState("");
     const [comment, setComment] = useState(0);
     const [resp,setResp] = useState(null);
@@ -23,10 +22,14 @@ let Add_new_comment = (props)=>{
             comment: comment,
             post_id: props.id,
         };
+
         await axios.post(url, data).then((r) => {
-            history.push(`/Post/${props.id}`)
+
+            console.log(props.id);
+            return history.push(`/Post/${props.id}`);
         }).catch((e) => {
-            setResp(e)
+            setResp(e);
+            history.push(`/Post/${props.id}`);
         });
     }
     return(<form noValidate autoComplete="off">

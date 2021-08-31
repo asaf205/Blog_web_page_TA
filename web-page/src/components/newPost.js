@@ -9,8 +9,8 @@ import {creatOptions, options_name_array} from "./Edit_delete";
 export let CheckAuthForEdit = async (history,setUser_id) => {
     let a = decodeURIComponent(document.cookie);
     console.log(a);
-    let decodedCookie = a.split('; session_id=')[1];
-
+    let decodedCookie = a.split('=')[1];
+    console.log(decodedCookie);
     if (!decodedCookie) {
         return history.push('/login')
     }
@@ -64,7 +64,7 @@ let NewPost = () => {
         });
 
     }
-
+    console.log(push)
     if (push === 0) {
         return (
             <div id="newPostRoot">

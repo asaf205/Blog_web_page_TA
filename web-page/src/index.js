@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import {
     BrowserRouter as Router,
     Switch,
-    Route, Link, useLocation
+    Route,
 } from "react-router-dom";
 import Posts, {Single_post} from "./components/Post";
 import Home from "./components/home";
@@ -14,14 +14,24 @@ import InputWithIcon from './components/login';
 import {UserSignup} from "./UserSignup";
 import UserLogout from "./UserLogout";
 import {UpdatePost} from "./components/Edit_delete";
-import {Breadcrumbs} from "@material-ui/core";
+import {Button, ButtonGroup, Grid} from "@material-ui/core";
 import HomeIcon from '@material-ui/icons/Home';
 import { makeStyles } from '@material-ui/core/styles';
 import Add_new_comment from "./components/Add_new_coment";
+
+
+
 const useStyles = makeStyles((theme) => ({
     link: {
         display: 'flex',
-        color:"#3f50b5"	,
+        flexDirection: 'column',
+        padding:'1rm',
+        border:0,
+        marginTop:theme.spacing(0.5),
+        '& > *': {
+        margin:theme.spacing(0.8)
+        },
+
     },
     icon: {
         marginRight: theme.spacing(0.5),
@@ -30,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
         color:"#3f50b5"	,
     },
     root: {
+        backgroundColor:"#e0e0e0",
+        marginBottom:'10px',
+        height:'60px',
         '& > span': {
             margin: theme.spacing(2),
         },
@@ -55,17 +68,17 @@ function App1() {
         <Router>
             <div>
                 <div className="title">
-                    <section className="table">
-                        <Breadcrumbs aria-label="breadcrumb" className={classes.link}>
-                            <Link to="/" className={classes.link}id="home" ><HomeIcon className={classes.icon}/></Link>
-                            <Link to="/new_post" className={classes.link} id="nan1">New Post</Link>
-                            <Link to="/Post" className={classes.link} id="nan2">Posts</Link>
+                    <Grid className={classes.root}>
+                        <ButtonGroup  color="primary">
+                            <Button href="/" className={classes.link} id="home" ><HomeIcon className={classes.icon}/></Button>
+                            <Button href="/new_post" className={classes.link} id="nan1">New Post</Button>
+                            <Button href="/Post" className={classes.link} id="nan2">Posts</Button>
 
-                            {login ? <Link to="/logout" className={classes.link} id="logout">Logout</Link> :
-                                <Link to="/login" className={classes.link} id="login">Login</Link>}
-                            <Link to="/signup" className={classes.link} id="signup">Signup</Link>
-                        </Breadcrumbs>
-                    </section>
+                            {login ? <Button href="/logout" className={classes.link} id="logout" onClick={<UserLogout/>}>Logout</Button> :
+                                <Button href="/login" className={classes.link} id="login">Login</Button>}
+                            <Button href="/signup" className={classes.link} id="signup">Signup</Button>
+                        </ButtonGroup>
+                    </Grid>
                 </div>
                 <Switch>
                     <Route path="/signup">
@@ -112,7 +125,5 @@ ReactDOM.render(
 );
 
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+
 reportWebVitals();

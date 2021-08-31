@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import FormControl from "@material-ui/core/FormControl";
 import {Button, InputLabel, NativeSelect, OutlinedInput, TextField} from "@material-ui/core";
 import React from "react";
@@ -11,6 +11,19 @@ export let creatOptions = (options_name_array,select_name)=>{
     }
     return optionList
 }
+
+let Get_single_post = async (setTitle,setBody,setCategory, id) => {
+    let url = '/api/posts/single';
+    let data = {
+        post_id:id
+    }
+    await axios.post(url,data).then((results) => {
+        console.log(results)
+        setTitle(results.data[0].title);
+        setBody(results.data[0].body);
+        setCategory(results.data[0].category);
+    });
+}
 export let options_name_array = ["News","Life Style","Tech"];
 export let UpdatePost = (props)=>{
         const [push, setPush] = useState(0);
@@ -18,6 +31,9 @@ export let UpdatePost = (props)=>{
         const [body, setBody] = useState(0);
         const [category, setCategory] = useState(0);
         const [resp,setResp] = useState(null);
+        useEffect(()=>{
+            Get_single_post(setTitle,setBody,setCategory, props.id);
+        },[])
         let Push = () => {
             setPush(1)
         }
@@ -64,11 +80,11 @@ export let UpdatePost = (props)=>{
                             id="title"
                             labelWidth={60}
                             onChange={getTitle}
-
+                            value={title}
                         />
                     </FormControl>
                     <p></p>
-                    <TextField id="body" label="Body" variant="outlined" multiline fullWidth rows={30} onChange={getBody}/>
+                    <TextField id="body" label="Body" variant="outlined" multiline fullWidth rows={30} onChange={getBody} value={body}/>
                     <p></p>
                     <FormControl className={"picText"} size={"small"} required={true} >
                         <NativeSelect
@@ -90,5 +106,3 @@ export let UpdatePost = (props)=>{
         }
 
     }
-
-export default UpdatePost;

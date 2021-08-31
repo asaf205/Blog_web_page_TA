@@ -112,14 +112,16 @@ def get_single_posts():
     cursor = db.cursor()
     cursor.execute(query, values)
     records = cursor.fetchall()
+    print(records)
     cursor.close()
-    header = ['post_id', 'title', 'body', 'upload_time', "author", "category"]
     data = []
-    post_id, title, body, upload_time, author, category = records[0]
-    upload_time = upload_time.strftime("%m/%d/%Y, %H:%M")
-    new_tuple = (post_id, title, body, upload_time, author, category)
-    data.append(dict(zip(header, new_tuple)))
-    views_update(curr_id)
+    if records[0]:
+        header = ['post_id', 'title', 'body', 'upload_time', "author", "category"]
+        post_id, title, body, upload_time, author, category = records[0]
+        upload_time = upload_time.strftime("%m/%d/%Y, %H:%M")
+        new_tuple = (post_id, title, body, upload_time, author, category)
+        data.append(dict(zip(header, new_tuple)))
+        views_update(curr_id)
     return json.dumps(data)
 
 

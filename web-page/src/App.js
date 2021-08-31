@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from "react";
 import './App.css';
 import {useParams, useHistory} from "react-router-dom";
-import {Button, Grid, ListItem, ListItemText} from "@material-ui/core";
+import {Box, Button, Grid, ListItem, ListItemText, Paper, Typography} from "@material-ui/core";
 import axios from "axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import {Get_posts_by_category} from "./components/Post";
+
+
 let deletePost = async (id) => {
     await axios.post('/api/delete', {post_id: id});
 }
@@ -26,7 +25,7 @@ export function Left(props) {
     let CheckAuthForEdit = async () => {
         let a = decodeURIComponent(document.cookie);
         console.log(a);
-        let decodedCookie = a.split('; session_id=')[1];
+        let decodedCookie = a.split('=')[1];
 
         if (!decodedCookie) {
             return history.push('/login')
@@ -48,12 +47,12 @@ export function Left(props) {
     let CheckAuthFoDelete = async () => {
         let a = decodeURIComponent(document.cookie);
         console.log(a);
-        let decodedCookie = a.split('; session_id=')[1];
+        let decodedCookie = a.split('=')[1];
         if (!decodedCookie) {
             return history.push('/login')
         }
         console.log(decodedCookie)
-        let url = '/api/check';
+        let url = '/api/check/edit_and_delete_permissions';
         console.log(postId)
         let data = {
             session_id: decodedCookie,
@@ -73,14 +72,14 @@ export function Left(props) {
         <div>
             <section id={props.id} className={props.className}>
                 <div className={props.classname}>
-                    <ListItem>
+                    <ListItem key={props.title}>
                         <ListItemText primary={props.title} secondary={props.text}/>
                     </ListItem>
-                    <ListItem>
+                    <ListItem key={props.id}>
                         <ListItemText>published on <strong>{props.order}</strong> by {props.author}</ListItemText>
 
                     </ListItem>
-                    <ListItem>
+                    <ListItem key={props.author}>
                         <ListItemText primary={`Category: ${props.category}`}/>
                     </ListItem>
 
@@ -121,8 +120,19 @@ let  Get_popular_posts = async (setPopularPosts,url)=>{
         console.log(err);
     })
 }
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: theme.palette.background.paper,
+    },
+
+}));
+
+
 export function Right(props) {
     const [popularPosts,setPopularPosts] = useState([]);
+    const classes = useStyles();
     const history = useHistory();
     let url = '/api/posts/most_popular';
     useEffect(() => {
@@ -130,16 +140,20 @@ export function Right(props) {
     }, []);
 
     const listItems = popularPosts.map((postItem) =>
-        <div key={postItem.post_id}>
-            <ListItem key={postItem.post_id} button onClick={()=>history.push(`/Post/${postItem.post_id}`)}>
+        <Box display="flex" justifyContent="center" key={postItem.post_id} className={classes.root} >
+            <Paper elevation={3}>
+            <ListItem  key={postItem.post_id} button onClick={()=>history.push(`/Post/${postItem.post_id}`)}>
                 <ListItemText primary={postItem.title} secondary={postItem.body ? postItem.body.substring(0, 200)+"...." : null}/>
             </ListItem>
             <Divider/>
-        </div>
+            </Paper>
+        </Box>
     );
     console.log(popularPosts)
     return(<div>
-            <p>POPULAR</p>
+        <Grid style={{textAlign:'center'}} >
+            <Typography variant={'h4'} color={"primary"}>POPULAR</Typography>
+        </Grid>
             {listItems}
         </div>);
 
