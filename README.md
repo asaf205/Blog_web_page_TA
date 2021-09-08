@@ -6,6 +6,9 @@ database: mySql
 style: MATERIAL-UI
 
 
+The sections implemented from the "Additional optional capabilities" file are: 1,2,4,10
+
+
 run:
 
 Before running:
